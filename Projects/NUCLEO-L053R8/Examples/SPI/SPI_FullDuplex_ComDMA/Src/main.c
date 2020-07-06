@@ -58,7 +58,8 @@
 SPI_HandleTypeDef SpiHandle;
 
 /* Buffer used for transmission */
-uint8_t aTxBuffer[] = "****SPI - Two Boards communication based on DMA **** SPI Message ******** SPI Message ******** SPI Message ****";
+uint8_t aTxBuffer[] = "hello\0";
+uint8_t aCompareBuffer[] = "hedao\0";
 
 /* Buffer used for reception */
 uint8_t aRxBuffer[BUFFERSIZE];
@@ -97,16 +98,16 @@ int main(void)
   /*##-1- Configure the SPI peripheral #######################################*/
   /* Set the SPI parameters */
   SpiHandle.Instance               = SPIx;
-  SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+  SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
   SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
   SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
-  SpiHandle.Init.CLKPolarity       = SPI_POLARITY_HIGH;
-  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
-  SpiHandle.Init.CRCPolynomial     = 7;
+  SpiHandle.Init.CLKPolarity       = SPI_POLARITY_LOW;
   SpiHandle.Init.DataSize          = SPI_DATASIZE_8BIT;
   SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
-  SpiHandle.Init.NSS               = SPI_NSS_SOFT;
   SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
+  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_ENABLE;
+  SpiHandle.Init.CRCPolynomial     = 7;
+  SpiHandle.Init.NSS               = SPI_NSS_SOFT;
   
 #ifdef MASTER_BOARD
   SpiHandle.Init.Mode = SPI_MODE_MASTER;
@@ -129,6 +130,11 @@ int main(void)
   {
   }
   BSP_LED_Off(LED2);
+
+  while(GPIO_read_NSS_state(GPIO_PIN_10) != 0)
+  {
+
+  }
 #endif /* MASTER_BOARD */
 
   /*##-2- Start the Full Duplex Communication process ########################*/  
@@ -143,7 +149,7 @@ int main(void)
 
   /*##-3- Wait for the end of the transfer ###################################*/  
   /*  Before starting a new communication transfer, you need to check the current   
-      state of the peripheral; if it’s busy you need to wait for the end of current
+      state of the peripheral; if itï¿½s busy you need to wait for the end of current
       transfer before starting a new one.
       For simplicity reasons, this example is just waiting till the end of the 
       transfer, but application may perform other tasks while transfer operation
@@ -153,7 +159,7 @@ int main(void)
   } 
 
   /*##-4- Compare the sent and received buffers ##############################*/
-  if(Buffercmp((uint8_t*)aTxBuffer, (uint8_t*)aRxBuffer, BUFFERSIZE))
+  if(Buffercmp((uint8_t*)aCompareBuffer, (uint8_t*)aRxBuffer, BUFFERSIZE))
   {
     /* Transfer error in transmission process */
     Error_Handler();

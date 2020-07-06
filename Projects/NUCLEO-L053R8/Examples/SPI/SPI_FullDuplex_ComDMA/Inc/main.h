@@ -65,6 +65,12 @@
 #define SPIx_MOSI_PIN                    GPIO_PIN_15
 #define SPIx_MOSI_GPIO_PORT              GPIOB
 #define SPIx_MOSI_AF                     GPIO_AF0_SPI2
+#define SPIx_NSS_PIN					 GPIO_PIN_12
+#define SPIx_NSS_GPIO_PORT				 GPIOB
+#define SPIx_NSS_AF						 GPIO_AF0_SPI2
+#define SPIx_MASTERCOM_TRIG_PIN      	 GPIO_PIN_10
+#define SPIx_MASTERCOM_TRIG_GPIO_PORT	 GPIOB
+#define SPIx_MASTERCOM_TRIG_AF 	         GPIO_AF0_SPI2
 
 /* Definition for SPIx's DMA */
 #define SPIx_TX_DMA_CHANNEL              DMA1_Channel5

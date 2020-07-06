@@ -103,6 +103,18 @@ GPIO_InitTypeDef  GPIO_InitStruct;
     GPIO_InitStruct.Alternate = SPIx_MOSI_AF;
     HAL_GPIO_Init(SPIx_MOSI_GPIO_PORT, &GPIO_InitStruct);
 
+    /* SPI NSS GPIO pin configuration  */
+    GPIO_InitStruct.Pin = SPIx_NSS_PIN;
+    GPIO_InitStruct.Alternate = SPIx_NSS_AF;
+    HAL_GPIO_Init(SPIx_NSS_GPIO_PORT, &GPIO_InitStruct);
+
+    /* SPI NSS GPIO pin configuration  */
+	GPIO_InitStruct.Pin = SPIx_MASTERCOM_TRIG_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT ;
+	GPIO_InitStruct.Alternate = SPIx_MASTERCOM_TRIG_AF;
+	HAL_GPIO_Init(SPIx_MASTERCOM_TRIG_GPIO_PORT, &GPIO_InitStruct);
+
+
     /*##-3- Configure the DMA ##################################################*/
     /* Configure the DMA handler for Transmission process */
     hdma_tx.Instance                 = SPIx_TX_DMA_CHANNEL;
@@ -171,6 +183,8 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi)
     HAL_GPIO_DeInit(SPIx_MISO_GPIO_PORT, SPIx_MISO_PIN);
     /* Configure SPI MOSI as alternate function  */
     HAL_GPIO_DeInit(SPIx_MOSI_GPIO_PORT, SPIx_MOSI_PIN);
+    /* Configure SPI NSS as alternate function  */
+    HAL_GPIO_DeInit(SPIx_NSS_GPIO_PORT, SPIx_NSS_PIN);
 
     /*##-3- Disable the DMA ####################################################*/
     /* De-Initialize the DMA associated to transmission process */

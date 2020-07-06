@@ -304,6 +304,17 @@ uint32_t BSP_PB_GetState(Button_TypeDef Button)
   return HAL_GPIO_ReadPin(BUTTON_PORT[Button], BUTTON_PIN[Button]);
 }
 
+/**
+  * @brief  Returns the selected Button state.
+  * @param  Button: Specifies the Button to be checked.
+  *   This parameter should be: BUTTON_USER
+  * @retval Button state.
+  */
+uint32_t GPIO_read_NSS_state(uint32_t nss_pin)
+{
+  return HAL_GPIO_ReadPin(GPIOB, nss_pin);
+}
+
 
 #ifdef HAL_SPI_MODULE_ENABLED
 /******************************************************************************

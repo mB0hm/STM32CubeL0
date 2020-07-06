@@ -57,14 +57,16 @@ enum {
 
 /* Private macro -------------------------------------------------------------*/
 /* Uncomment this line to use the board as master, if not it is used as slave */
-//#define MASTER_BOARD
+#define MASTER_BOARD
 
 /* Private variables ---------------------------------------------------------*/
 /* SPI handler declaration */
 SPI_HandleTypeDef SpiHandle;
 
 /* Buffer used for transmission */
-uint8_t aTxBuffer[] = "****SPI - Two Boards communication based on DMA **** SPI Message ******** SPI Message ******** SPI Message ****";
+uint8_t aTxBuffer[] = "hedao\0";
+uint8_t aCompareBuffer[] = "hello\0";
+
 
 /* Buffer used for reception */
 uint8_t aRxBuffer[BUFFERSIZE];
@@ -113,7 +115,7 @@ int main(void)
   SpiHandle.Init.DataSize          = SPI_DATASIZE_8BIT;
   SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
   SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
-  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
+  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_ENABLE;
   SpiHandle.Init.CRCPolynomial     = 7;
   SpiHandle.Init.NSS               = SPI_NSS_SOFT;
 
@@ -164,7 +166,7 @@ int main(void)
   {
     case TRANSFER_COMPLETE :
       /*##-4- Compare the sent and received buffers ##############################*/
-      if(Buffercmp((uint8_t*)aTxBuffer, (uint8_t*)aRxBuffer, BUFFERSIZE))
+      if(Buffercmp((uint8_t*)aCompareBuffer, (uint8_t*)aRxBuffer, BUFFERSIZE))
       {
         /* Processing Error */
         Error_Handler();     
